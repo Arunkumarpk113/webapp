@@ -1,8 +1,9 @@
 <?php
-// Enable error reporting
+// Enable error reporting for development (remove or comment out in production)
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 // Database configuration
 $servername = "localhost";
 $username = "arun"; // Update with your database username
@@ -17,28 +18,35 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Retrieve form data
-$name = $_POST['name'];
-$email = $_POST['email'];
-$phone = $_POST['phone'];
-$password = $_POST['password'];
+// Check if form data is set
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve form data and sanitize it
+    $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
+    $phone = trim($_POST['phone']);
+    $password = trim($_POST['password']);
 
-// Hash the password before storing it
-$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    // Hash the password before storing it
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-// Prepare and bind
-$stmt = $conn->prepare("INSERT INTO registration (name, email, phone_number, password) VALUES (?, ?, ?, ?)");
-$stmt->bind_param("ssss", $name, $email, $phone, $hashed_password);
+    // Prepare and bind
+    $stmt = $conn->prepare("INSERT INTO registration (name, email, phone_number, password) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $name, $email, $phone, $hashed_password);
 
-// Execute the statement
-if ($stmt->execute()) {
-    // Redirect to the result page with query parameters
-    header("Location: result.html?name=" . urlencode($name) . "&email=" . urlencode($email));
-} else {
-    echo "Error: " . $stmt->error;
+    // Execute the statement
+    if ($stmt->execute()) {
+        // Redirect to the result page with query parameters
+        header("Location: result.html?name=" . urlencode($name) . "&email=" . urlencode($email));
+        exit(); // Ensure no further code is executed after redirection
+    } else {
+        echo "Error: " . $stmt->error; // Display error message
+    }
+
+    // Close statement and connection
+    $stmt->close();
 }
 
-// Close statement and connection
-$stmt->close();
+// Close the connection
 $conn->close();
 ?>
+
