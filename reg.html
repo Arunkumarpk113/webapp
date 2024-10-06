@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="reg.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+</head>
+<body>
+    <div class="content">
+        <div class="text">Registration Form</div>
+        <form action="reg.php" method="post">
+            <div class="field">
+                <input type="text" name="name" required>
+                <span class="fas fa-user"></span>
+                <label>Name</label>
+            </div>
+            <div class="field">
+                <input type="email" name="email" required>
+                <span class="fas fa-envelope"></span>
+                <label>Email</label>
+            </div>
+            <div class="field">
+                <input type="tel" name="phone" required>
+                <span class="fas fa-phone"></span>
+                <label>Phone Number</label>
+            </div>
+            <div class="field">
+                <input type="password" name="password" required>
+                <span class="fas fa-lock"></span>
+                <label>Password</label>
+            </div>
+            <button type="submit">Register</button>
+            <div class="sign-up">
+                Already have an account?
+                <a href="login.html">Login now</a>
+            </div>
+        </form>
+    </div>
+    <script src="reg.js"></script>
+</body>
+</html>
+
